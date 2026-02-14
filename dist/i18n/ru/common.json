@@ -1,0 +1,67 @@
+{
+  "welcome": "Добро пожаловать в Zaklad.ua",
+  "success": "Операция выполнена успешно",
+  "error": "Произошла ошибка",
+  "notFound": "Не найдено",
+  "unauthorized": "Неавторизованный доступ",
+  "forbidden": "Доступ запрещен",
+  "badRequest": "Неверный запрос",
+  "validation": {
+    "required": "Поле {field} обязательно",
+    "email": "Неверный формат email",
+    "minLength": "Минимальная длина: {min} символов",
+    "maxLength": "Максимальная длина: {max} символов"
+  },
+  "auth": {
+    "loginSuccess": "Успешный вход",
+    "registerSuccess": "Регистрация успешна",
+    "logoutSuccess": "Успешный выход",
+    "invalidCredentials": "Неверный email или пароль",
+    "emailExists": "Пользователь с таким email уже существует",
+    "tokenExpired": "Токен доступа просрочен",
+    "accountNotVerified": "Аккаунт не верифицирован"
+  },
+  "user": {
+    "notFound": "Пользователь не найден",
+    "updated": "Профиль обновлен",
+    "deleted": "Пользователь удален"
+  },
+  "establishment": {
+    "created": "Заведение создано",
+    "updated": "Заведение обновлено",
+    "deleted": "Заведение удалено",
+    "notFound": "Заведение не найдено",
+    "types": {
+      "restaurant": "Ресторан",
+      "cafe": "Кафе",
+      "fastfood": "Фастфуд",
+      "bar": "Бар",
+      "bakery": "Пекарня",
+      "coffeeshop": "Кофейня",
+      "other": "Другое"
+    }
+  },
+  "posSystem": {
+    "created": "POS-система создана",
+    "updated": "POS-система обновлена",
+    "deleted": "POS-система удалена",
+    "notFound": "POS-система не найдена"
+  },
+  "review": {
+    "created": "Отзыв добавлен",
+    "updated": "Отзыв обновлен",
+    "deleted": "Отзыв удален",
+    "notFound": "Отзыв не найден",
+    "pending": "Отзыв на модерации"
+  },
+  "rating": {
+    "created": "Рейтинг добавлен",
+    "updated": "Рейтинг обновлен"
+  },
+  "business": {
+    "verificationPending": "Верификация на рассмотрении",
+    "verified": "Бизнес верифицирован",
+    "rejected": "Верификация отклонена"
+  }
+}
+

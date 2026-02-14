@@ -1,0 +1,67 @@
+{
+  "welcome": "Ласкаво просимо до Zaklad.ua",
+  "success": "Операція виконана успішно",
+  "error": "Сталася помилка",
+  "notFound": "Не знайдено",
+  "unauthorized": "Неавторизований доступ",
+  "forbidden": "Доступ заборонено",
+  "badRequest": "Невірний запит",
+  "validation": {
+    "required": "Поле {field} є обов'язковим",
+    "email": "Невірний формат email",
+    "minLength": "Мінімальна довжина: {min} символів",
+    "maxLength": "Максимальна довжина: {max} символів"
+  },
+  "auth": {
+    "loginSuccess": "Успішний вхід",
+    "registerSuccess": "Реєстрація успішна",
+    "logoutSuccess": "Успішний вихід",
+    "invalidCredentials": "Невірний email або пароль",
+    "emailExists": "Користувач з таким email вже існує",
+    "tokenExpired": "Токен доступу прострочено",
+    "accountNotVerified": "Акаунт не верифіковано"
+  },
+  "user": {
+    "notFound": "Користувача не знайдено",
+    "updated": "Профіль оновлено",
+    "deleted": "Користувача видалено"
+  },
+  "establishment": {
+    "created": "Заклад створено",
+    "updated": "Заклад оновлено",
+    "deleted": "Заклад видалено",
+    "notFound": "Заклад не знайдено",
+    "types": {
+      "restaurant": "Ресторан",
+      "cafe": "Кафе",
+      "fastfood": "Фастфуд",
+      "bar": "Бар",
+      "bakery": "Пекарня",
+      "coffeeshop": "Кав'ярня",
+      "other": "Інше"
+    }
+  },
+  "posSystem": {
+    "created": "POS-систему створено",
+    "updated": "POS-систему оновлено",
+    "deleted": "POS-систему видалено",
+    "notFound": "POS-систему не знайдено"
+  },
+  "review": {
+    "created": "Відгук додано",
+    "updated": "Відгук оновлено",
+    "deleted": "Відгук видалено",
+    "notFound": "Відгук не знайдено",
+    "pending": "Відгук на модерації"
+  },
+  "rating": {
+    "created": "Рейтинг додано",
+    "updated": "Рейтинг оновлено"
+  },
+  "business": {
+    "verificationPending": "Верифікація на розгляді",
+    "verified": "Бізнес верифіковано",
+    "rejected": "Верифікацію відхилено"
+  }
+}
+

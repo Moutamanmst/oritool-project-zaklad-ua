@@ -1,0 +1,93 @@
+import { PrismaService } from '../../prisma/prisma.service';
+export declare class SeoService {
+    private prisma;
+    constructor(prisma: PrismaService);
+    getSettings(): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        siteName: string;
+        siteDescription: string | null;
+        siteUrl: string;
+        defaultOgImage: string | null;
+        favicon: string | null;
+        googleAnalyticsId: string | null;
+        googleSearchConsoleId: string | null;
+        facebookPixelId: string | null;
+        twitterHandle: string | null;
+        facebookUrl: string | null;
+        instagramUrl: string | null;
+        telegramUrl: string | null;
+        linkedinUrl: string | null;
+        allowIndexing: boolean;
+        generateSitemap: boolean;
+        customHeadCode: string | null;
+        customBodyCode: string | null;
+    }>;
+    updateSettings(data: any): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        siteName: string;
+        siteDescription: string | null;
+        siteUrl: string;
+        defaultOgImage: string | null;
+        favicon: string | null;
+        googleAnalyticsId: string | null;
+        googleSearchConsoleId: string | null;
+        facebookPixelId: string | null;
+        twitterHandle: string | null;
+        facebookUrl: string | null;
+        instagramUrl: string | null;
+        telegramUrl: string | null;
+        linkedinUrl: string | null;
+        allowIndexing: boolean;
+        generateSitemap: boolean;
+        customHeadCode: string | null;
+        customBodyCode: string | null;
+    }>;
+    getPageSeo(path: string): Promise<{
+        description: string | null;
+        title: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        keywords: string | null;
+        path: string;
+        ogImage: string | null;
+        noIndex: boolean;
+    } | null>;
+    getAllPageSeo(): Promise<{
+        description: string | null;
+        title: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        keywords: string | null;
+        path: string;
+        ogImage: string | null;
+        noIndex: boolean;
+    }[]>;
+    upsertPageSeo(path: string, data: any): Promise<{
+        description: string | null;
+        title: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        keywords: string | null;
+        path: string;
+        ogImage: string | null;
+        noIndex: boolean;
+    }>;
+    deletePageSeo(path: string): Promise<{
+        description: string | null;
+        title: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        keywords: string | null;
+        path: string;
+        ogImage: string | null;
+        noIndex: boolean;
+    }>;
+}

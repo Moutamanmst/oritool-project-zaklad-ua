@@ -1,0 +1,105 @@
+import { TechniciansService } from './technicians.service';
+export declare class TechniciansController {
+    private readonly techniciansService;
+    constructor(techniciansService: TechniciansService);
+    findAll(city?: string, specialization?: string, status?: string, limit?: string, page?: string): Promise<{
+        data: {
+            city: string | null;
+            rating: number;
+            description: string | null;
+            email: string | null;
+            phone: string | null;
+            website: string | null;
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            logoUrl: string | null;
+            workingHours: string | null;
+            status: import(".prisma/client").$Enums.EntityStatus;
+            reviewCount: number;
+            specializations: string[];
+            isAvailable: boolean;
+        }[];
+        meta: {
+            total: number;
+            page: number;
+            limit: number;
+            totalPages: number;
+        };
+    }>;
+    getSpecializations(): Promise<string[]>;
+    getCities(): Promise<(string | null)[]>;
+    findOne(id: string): Promise<{
+        city: string | null;
+        rating: number;
+        description: string | null;
+        email: string | null;
+        phone: string | null;
+        website: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        logoUrl: string | null;
+        workingHours: string | null;
+        status: import(".prisma/client").$Enums.EntityStatus;
+        reviewCount: number;
+        specializations: string[];
+        isAvailable: boolean;
+    }>;
+    create(data: any): Promise<{
+        city: string | null;
+        rating: number;
+        description: string | null;
+        email: string | null;
+        phone: string | null;
+        website: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        logoUrl: string | null;
+        workingHours: string | null;
+        status: import(".prisma/client").$Enums.EntityStatus;
+        reviewCount: number;
+        specializations: string[];
+        isAvailable: boolean;
+    }>;
+    update(id: string, data: any): Promise<{
+        city: string | null;
+        rating: number;
+        description: string | null;
+        email: string | null;
+        phone: string | null;
+        website: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        logoUrl: string | null;
+        workingHours: string | null;
+        status: import(".prisma/client").$Enums.EntityStatus;
+        reviewCount: number;
+        specializations: string[];
+        isAvailable: boolean;
+    }>;
+    delete(id: string): Promise<{
+        city: string | null;
+        rating: number;
+        description: string | null;
+        email: string | null;
+        phone: string | null;
+        website: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        logoUrl: string | null;
+        workingHours: string | null;
+        status: import(".prisma/client").$Enums.EntityStatus;
+        reviewCount: number;
+        specializations: string[];
+        isAvailable: boolean;
+    }>;
+}

@@ -1,0 +1,463 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  GUEST
+  USER
+  BUSINESS
+  ADMIN
+}
+
+enum BusinessType {
+  RESTAURANT
+  CAFE
+  FASTFOOD
+  BAR
+  BAKERY
+  COFFEESHOP
+  OTHER
+}
+
+enum EntityStatus {
+  PENDING
+  ACTIVE
+  INACTIVE
+  REJECTED
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  role          UserRole  @default(USER)
+  isVerified    Boolean   @default(false)
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  profile       UserProfile?
+  businessProfile BusinessProfile?
+  reviews       Review[]
+  ratings       Rating[]
+  favorites     Favorite[]
+  reviewResponses ReviewResponse[]
+  aiLogs        AILog[]
+
+  @@map("users")
+}
+
+model UserProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  firstName   String?
+  lastName    String?
+  phone       String?
+  avatarUrl   String?
+  city        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+model BusinessProfile {
+  id              String        @id @default(uuid())
+  userId          String        @unique
+  companyName     String
+  companyNameRu   String?
+  description     String?
+  descriptionRu   String?
+  website         String?
+  phone           String?
+  email           String?
+  logoUrl         String?
+  isVerified      Boolean       @default(false)
+  verifiedAt      DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  establishments  Establishment[]
+  posSystems      PosSystem[]
+
+  @@map("business_profiles")
+}
+
+model Category {
+  id            String          @id @default(uuid())
+  slug          String          @unique
+  name          String
+  nameRu        String?
+  description   String?
+  descriptionRu String?
+  icon          String?
+  parentId      String?
+  order         Int             @default(0)
+  isActive      Boolean         @default(true)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  parent        Category?       @relation("CategoryParent", fields: [parentId], references: [id])
+  children      Category[]      @relation("CategoryParent")
+  establishments Establishment[]
+  posSystems    PosSystem[]
+
+  @@map("categories")
+}
+
+model City {
+  id              String          @id @default(uuid())
+  slug            String          @unique
+  name            String
+  nameRu          String?
+  region          String?
+  regionRu        String?
+  isActive        Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  establishments  Establishment[]
+
+  @@map("cities")
+}
+
+model Establishment {
+  id              String          @id @default(uuid())
+  slug            String          @unique
+  name            String
+  nameRu          String?
+  description     String?
+  descriptionRu   String?
+  businessType    BusinessType    @default(RESTAURANT)
+  address         String?
+  addressRu       String?
+  phone           String?
+  email           String?
+  website         String?
+  logoUrl         String?
+  coverUrl        String?
+  priceRange      Int             @default(2)
+  latitude        Float?
+  longitude       Float?
+  workingHours    Json?
+  features        Json?
+  status          EntityStatus    @default(PENDING)
+  isFeatured      Boolean         @default(false)
+  viewCount       Int             @default(0)
+  averageRating   Float           @default(0)
+  reviewCount     Int             @default(0)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  businessProfileId String?
+  categoryId        String?
+  cityId            String?
+
+  businessProfile   BusinessProfile? @relation(fields: [businessProfileId], references: [id])
+  category          Category?        @relation(fields: [categoryId], references: [id])
+  city              City?            @relation(fields: [cityId], references: [id])
+
+  reviews           Review[]
+  ratings           Rating[]
+  favorites         Favorite[]
+  images            EstablishmentImage[]
+
+  @@map("establishments")
+}
+
+model EstablishmentImage {
+  id              String        @id @default(uuid())
+  establishmentId String
+  url             String
+  alt             String?
+  altRu           String?
+  order           Int           @default(0)
+  createdAt       DateTime      @default(now())
+
+  establishment   Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+
+  @@map("establishment_images")
+}
+
+model PosSystem {
+  id              String          @id @default(uuid())
+  slug            String          @unique
+  name            String
+  nameRu          String?
+  description     String?
+  descriptionRu   String?
+  shortDescription String?
+  shortDescriptionRu String?
+  logoUrl         String?
+  coverUrl        String?
+  website         String?
+  priceFrom       Float?
+  priceTo         Float?
+  pricingModel    String?
+  features        Json?
+  integrations    Json?
+  status          EntityStatus    @default(PENDING)
+  isFeatured      Boolean         @default(false)
+  viewCount       Int             @default(0)
+  averageRating   Float           @default(0)
+  reviewCount     Int             @default(0)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  businessProfileId String?
+  categoryId        String?
+
+  businessProfile   BusinessProfile? @relation(fields: [businessProfileId], references: [id])
+  category          Category?        @relation(fields: [categoryId], references: [id])
+
+  reviews           Review[]
+  ratings           Rating[]
+  favorites         Favorite[]
+  images            PosSystemImage[]
+
+  @@map("pos_systems")
+}
+
+model PosSystemImage {
+  id          String    @id @default(uuid())
+  posSystemId String
+  url         String
+  alt         String?
+  altRu       String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+
+  posSystem   PosSystem @relation(fields: [posSystemId], references: [id], onDelete: Cascade)
+
+  @@map("pos_system_images")
+}
+
+model Review {
+  id              String          @id @default(uuid())
+  content         String
+  pros            String?
+  cons            String?
+  status          ReviewStatus    @default(PENDING)
+  isVerifiedPurchase Boolean      @default(false)
+  helpfulCount    Int             @default(0)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  userId          String
+  establishmentId String?
+  posSystemId     String?
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  establishment   Establishment?  @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  posSystem       PosSystem?      @relation(fields: [posSystemId], references: [id], onDelete: Cascade)
+
+  responses       ReviewResponse[]
+
+  @@map("reviews")
+}
+
+model ReviewResponse {
+  id          String    @id @default(uuid())
+  content     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  reviewId    String
+  userId      String
+
+  review      Review    @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("review_responses")
+}
+
+model Rating {
+  id              String          @id @default(uuid())
+  score           Int
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  userId          String
+  establishmentId String?
+  posSystemId     String?
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  establishment   Establishment?  @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  posSystem       PosSystem?      @relation(fields: [posSystemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, establishmentId])
+  @@unique([userId, posSystemId])
+  @@map("ratings")
+}
+
+model Favorite {
+  id              String          @id @default(uuid())
+  createdAt       DateTime        @default(now())
+
+  userId          String
+  establishmentId String?
+  posSystemId     String?
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  establishment   Establishment?  @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  posSystem       PosSystem?      @relation(fields: [posSystemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, establishmentId])
+  @@unique([userId, posSystemId])
+  @@map("favorites")
+}
+
+// AI Chat Logs
+model AILog {
+  id              String    @id @default(uuid())
+  question        String    @db.Text
+  response        String    @db.Text
+  category        String?
+  userId          String?
+  sessionId       String
+  responseTime    Int       // in milliseconds
+  helpful         Boolean?
+  tokens          Int       @default(0)
+  model           String    @default("gpt-4o-mini")
+  userAgent       String?
+  ipAddress       String?
+  createdAt       DateTime  @default(now())
+
+  user            User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([category])
+  @@index([sessionId])
+  @@map("ai_logs")
+}
+
+// Site Analytics
+model Analytics {
+  id              String    @id @default(uuid())
+  event           String    // page_view, search, click, etc.
+  page            String?
+  entityType      String?   // establishment, pos_system, etc.
+  entityId        String?
+  userId          String?
+  sessionId       String?
+  metadata        Json?
+  createdAt       DateTime  @default(now())
+
+  @@index([createdAt])
+  @@index([event])
+  @@map("analytics")
+}
+
+// Site Content - editable content for all pages
+model SiteContent {
+  id              String    @id @default(uuid())
+  key             String    @unique  // e.g., "homepage", "footer", "establishments", etc.
+  data            Json      // Stores all content as JSON
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("site_content")
+}
+
+// SEO Settings - global and per-page SEO configuration
+model SeoSettings {
+  id                    String    @id @default(uuid())
+  siteName              String    @default("ZakladUA")
+  siteDescription       String?
+  siteUrl               String    @default("https://zaklad.ua")
+  defaultOgImage        String?
+  favicon               String?
+  googleAnalyticsId     String?
+  googleSearchConsoleId String?
+  facebookPixelId       String?
+  twitterHandle         String?
+  facebookUrl           String?
+  instagramUrl          String?
+  telegramUrl           String?
+  linkedinUrl           String?
+  allowIndexing         Boolean   @default(true)
+  generateSitemap       Boolean   @default(true)
+  customHeadCode        String?   @db.Text
+  customBodyCode        String?   @db.Text
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("seo_settings")
+}
+
+// Page SEO - per-page SEO settings
+model PageSeo {
+  id              String    @id @default(uuid())
+  path            String    @unique  // e.g., "/", "/establishments", etc.
+  title           String?
+  description     String?
+  keywords        String?
+  ogImage         String?
+  noIndex         Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("page_seo")
+}
+
+// Blog Articles
+model BlogArticle {
+  id              String    @id @default(uuid())
+  slug            String    @unique
+  title           String
+  titleRu         String?
+  excerpt         String?
+  excerptRu       String?
+  content         String    @db.Text
+  contentRu       String?   @db.Text
+  coverImage      String?
+  category        String    // e.g., "news", "guides", "trends"
+  tags            String[]
+  author          String?
+  status          EntityStatus @default(PENDING)
+  isFeatured      Boolean   @default(false)
+  viewCount       Int       @default(0)
+  publishedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([category])
+  @@index([status])
+  @@map("blog_articles")
+}
+
+// Technicians / Service Centers for Equipment
+model Technician {
+  id              String    @id @default(uuid())
+  name            String
+  phone           String?
+  email           String?
+  city            String?
+  specializations String[]
+  rating          Float     @default(0)
+  reviewCount     Int       @default(0)
+  isAvailable     Boolean   @default(true)
+  description     String?
+  logoUrl         String?
+  website         String?
+  workingHours    String?
+  status          EntityStatus @default(ACTIVE)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("technicians")
+}
